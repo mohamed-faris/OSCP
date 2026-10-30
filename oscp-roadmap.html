@@ -1,0 +1,1011 @@
+<title>OSCP Study Roadmap</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=Inter:wght@400;500;600;700&display=swap">
+<style>
+  /* Layout: single-column document with phase cards, collapsible sections, and progress indicators */
+  :root {
+    --bg: #0c0e12;
+    --bg-elevated: #141720;
+    --bg-card: #1a1d27;
+    --fg: #e2e4e9;
+    --fg-muted: #8b8fa3;
+    --fg-dim: #5c6070;
+    --accent: #4ade80;
+    --accent-dim: rgba(74, 222, 128, 0.12);
+    --danger: #f87171;
+    --warning: #fbbf24;
+    --info: #60a5fa;
+    --border: #2a2d3a;
+    --font-display: 'IBM Plex Mono', monospace;
+    --font-body: 'Inter', system-ui, sans-serif;
+    color-scheme: dark;
+  }
+
+  @media (prefers-color-scheme: light) {
+    :root:not([data-theme="dark"]) {
+      --bg: #f6f7f9;
+      --bg-elevated: #ffffff;
+      --bg-card: #ffffff;
+      --fg: #1a1c23;
+      --fg-muted: #5c6070;
+      --fg-dim: #9ca0b0;
+      --accent: #16a34a;
+      --accent-dim: rgba(22, 163, 74, 0.08);
+      --danger: #dc2626;
+      --warning: #d97706;
+      --info: #2563eb;
+      --border: #e2e4e9;
+      color-scheme: light;
+    }
+  }
+
+  :root[data-theme="light"] {
+    --bg: #f6f7f9;
+    --bg-elevated: #ffffff;
+    --bg-card: #ffffff;
+    --fg: #1a1c23;
+    --fg-muted: #5c6070;
+    --fg-dim: #9ca0b0;
+    --accent: #16a34a;
+    --accent-dim: rgba(22, 163, 74, 0.08);
+    --danger: #dc2626;
+    --warning: #d97706;
+    --info: #2563eb;
+    --border: #e2e4e9;
+    color-scheme: light;
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--font-body);
+    font-size: 15px;
+    line-height: 1.65;
+    padding-left: max(16px, env(safe-area-inset-left, 0px));
+    padding-right: max(16px, env(safe-area-inset-right, 0px));
+    padding-block: 0;
+  }
+
+  .container {
+    max-width: 780px;
+    margin: 0 auto;
+    padding-block: 2rem 4rem;
+  }
+
+  /* Header */
+  .hero {
+    padding: 2.5rem 0 2rem;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 2rem;
+  }
+
+  .hero-label {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin-bottom: 0.75rem;
+  }
+
+  .hero h1 {
+    font-family: var(--font-display);
+    font-size: clamp(1.5rem, 4vw, 2rem);
+    font-weight: 600;
+    line-height: 1.2;
+    margin: 0 0 0.75rem;
+    text-wrap: balance;
+    color: var(--fg);
+  }
+
+  .hero p {
+    color: var(--fg-muted);
+    font-size: 14px;
+    margin: 0;
+    max-width: 60ch;
+  }
+
+  /* Exam stats grid */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px;
+    margin: 2rem 0;
+  }
+
+  .stat-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1rem;
+  }
+
+  .stat-label {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    margin-bottom: 4px;
+  }
+
+  .stat-value {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--fg);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .stat-value.accent { color: var(--accent); }
+  .stat-value.danger { color: var(--danger); }
+  .stat-value.warning { color: var(--warning); }
+
+  .stat-note {
+    font-size: 12px;
+    color: var(--fg-muted);
+    margin-top: 2px;
+  }
+
+  /* Section headers */
+  h2 {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
+    margin: 3rem 0 1.25rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border);
+  }
+
+  h3 {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--fg);
+    margin: 0 0 0.5rem;
+  }
+
+  /* Phase cards */
+  .phase {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    margin-bottom: 16px;
+    overflow: hidden;
+  }
+
+  .phase-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.25rem;
+    cursor: pointer;
+    user-select: none;
+    transition: background 0.15s;
+  }
+
+  .phase-header:hover {
+    background: var(--accent-dim);
+  }
+
+  .phase-number {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    background: var(--accent-dim);
+    border-radius: 4px;
+    padding: 3px 8px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .phase-title {
+    font-family: var(--font-display);
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--fg);
+    flex: 1;
+    min-width: 0;
+  }
+
+  .phase-weeks {
+    font-family: var(--font-display);
+    font-size: 11px;
+    color: var(--fg-dim);
+    flex-shrink: 0;
+  }
+
+  .phase-chevron {
+    color: var(--fg-dim);
+    transition: transform 0.2s;
+    flex-shrink: 0;
+    font-size: 12px;
+  }
+
+  .phase.open .phase-chevron {
+    transform: rotate(90deg);
+  }
+
+  .phase-body {
+    display: none;
+    padding: 0 1.25rem 1.25rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .phase.open .phase-body {
+    display: block;
+  }
+
+  .phase-goal {
+    font-size: 13px;
+    color: var(--fg-muted);
+    font-style: italic;
+    margin: 1rem 0;
+    padding-left: 12px;
+    border-left: 2px solid var(--accent);
+  }
+
+  /* Skill items */
+  .skill-group-title {
+    font-family: var(--font-display);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--fg-muted);
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  .skill-list {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .skill-list li {
+    font-size: 13.5px;
+    color: var(--fg);
+    padding: 4px 0;
+    padding-left: 18px;
+    position: relative;
+  }
+
+  .skill-list li::before {
+    content: '>';
+    font-family: var(--font-display);
+    color: var(--accent);
+    position: absolute;
+    left: 0;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  /* Room/machine recommendations */
+  .room-tag {
+    display: inline-block;
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 8px;
+    border-radius: 4px;
+    margin: 2px;
+  }
+
+  .room-tag.thm {
+    background: rgba(74, 222, 128, 0.1);
+    color: var(--accent);
+    border: 1px solid rgba(74, 222, 128, 0.2);
+  }
+
+  .room-tag.htb {
+    background: rgba(96, 165, 250, 0.1);
+    color: var(--info);
+    border: 1px solid rgba(96, 165, 250, 0.2);
+  }
+
+  .room-tag.pg {
+    background: rgba(251, 191, 36, 0.1);
+    color: var(--warning);
+    border: 1px solid rgba(251, 191, 36, 0.2);
+  }
+
+  .rooms-wrap {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin: 0.5rem 0;
+  }
+
+  .milestone {
+    background: var(--accent-dim);
+    border: 1px solid rgba(74, 222, 128, 0.15);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-size: 13px;
+    color: var(--fg);
+    margin-top: 1rem;
+  }
+
+  .milestone strong {
+    color: var(--accent);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  /* Skills gap table */
+  .gap-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+    margin: 1rem 0;
+  }
+
+  .gap-table th {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--fg-dim);
+    text-align: left;
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .gap-table td {
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
+    color: var(--fg);
+    vertical-align: top;
+  }
+
+  .gap-table tr:last-child td { border-bottom: none; }
+
+  .priority-badge {
+    font-family: var(--font-display);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    padding: 2px 7px;
+    border-radius: 3px;
+    text-transform: uppercase;
+  }
+
+  .priority-badge.critical {
+    background: rgba(248, 113, 113, 0.15);
+    color: var(--danger);
+  }
+
+  .priority-badge.high {
+    background: rgba(251, 191, 36, 0.15);
+    color: var(--warning);
+  }
+
+  .priority-badge.medium {
+    background: rgba(96, 165, 250, 0.15);
+    color: var(--info);
+  }
+
+  /* Tools reference */
+  .tools-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 1rem 0;
+  }
+
+  .tool-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+  }
+
+  .tool-name {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  .tool-desc {
+    font-size: 12px;
+    color: var(--fg-muted);
+    margin-top: 2px;
+  }
+
+  /* Lessons / quotes */
+  .lesson {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--danger);
+    border-radius: 0 6px 6px 0;
+    padding: 1rem 1.25rem;
+    margin: 12px 0;
+  }
+
+  .lesson-title {
+    font-family: var(--font-display);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--fg);
+    margin-bottom: 4px;
+  }
+
+  .lesson blockquote {
+    font-size: 12.5px;
+    color: var(--fg-muted);
+    font-style: italic;
+    margin: 6px 0;
+    padding: 0;
+    border: none;
+  }
+
+  .lesson p {
+    font-size: 13px;
+    margin: 6px 0 0;
+    color: var(--fg);
+  }
+
+  /* Exam day timeline */
+  .timeline {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    margin: 1rem 0;
+  }
+
+  .timeline-item {
+    display: flex;
+    gap: 12px;
+    padding: 10px 0;
+    border-bottom: 1px solid var(--border);
+    font-size: 13px;
+    align-items: baseline;
+  }
+
+  .timeline-item:last-child { border-bottom: none; }
+
+  .timeline-time {
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--accent);
+    flex-shrink: 0;
+    width: 60px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .timeline-desc { color: var(--fg); flex: 1; min-width: 0; }
+
+  /* Footer */
+  .sources {
+    margin-top: 3rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--border);
+  }
+
+  .sources h2 { border-bottom: none; margin-top: 0; }
+
+  .sources a {
+    color: var(--fg-muted);
+    font-size: 12px;
+    text-decoration: none;
+    display: block;
+    padding: 3px 0;
+    word-break: break-all;
+  }
+
+  .sources a:hover { color: var(--accent); }
+
+  /* Code blocks */
+  .code-block {
+    background: var(--bg-elevated);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 1rem;
+    font-family: var(--font-display);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--fg-muted);
+    overflow-x: auto;
+    margin: 0.75rem 0;
+    white-space: pre;
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .tools-grid { grid-template-columns: 1fr; }
+    .gap-table { font-size: 12px; }
+    .gap-table th, .gap-table td { padding: 6px 6px; }
+    .timeline-item { flex-direction: column; gap: 2px; }
+    .timeline-time { width: auto; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .phase-chevron { transition: none; }
+  }
+</style>
+
+<div class="container">
+  <div class="hero">
+    <div class="hero-label">PEN-200 Preparation Guide</div>
+    <h1>OSCP Study Roadmap</h1>
+    <p>Compiled from 30+ real pass/fail reports. What actually worked, what didn't, and a phased plan tailored for your background.</p>
+  </div>
+
+  <!-- Exam Stats -->
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-label">Exam Duration</div>
+      <div class="stat-value">23h 45m</div>
+      <div class="stat-note">+ 24h for report</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Pass Score</div>
+      <div class="stat-value accent">70 / 100</div>
+      <div class="stat-note">points minimum</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Standalones</div>
+      <div class="stat-value">3 x 20</div>
+      <div class="stat-note">60 points total</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">AD Set</div>
+      <div class="stat-value warning">40 pts</div>
+      <div class="stat-note">all-or-nothing chain</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Target Strategy</div>
+      <div class="stat-value accent">80 pts</div>
+      <div class="stat-note">AD (40) + 2 standalones (40)</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">Study Timeline</div>
+      <div class="stat-value">4-6 mo</div>
+      <div class="stat-note">part-time study</div>
+    </div>
+  </div>
+
+  <!-- Skills Gap -->
+  <h2>Your Skills Gap</h2>
+  <p style="font-size:13px;color:var(--fg-muted);margin:0 0 1rem">You bring web security, mobile app security, and some networking. Here's what to build from zero.</p>
+  <div style="overflow-x:auto">
+    <table class="gap-table">
+      <thead>
+        <tr><th>Skill Area</th><th>Your Level</th><th>Priority</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>Active Directory attacks</td><td>Zero</td><td><span class="priority-badge critical">Critical</span></td></tr>
+        <tr><td>Linux privilege escalation</td><td>Zero</td><td><span class="priority-badge critical">Critical</span></td></tr>
+        <tr><td>Windows privilege escalation</td><td>Zero</td><td><span class="priority-badge critical">Critical</span></td></tr>
+        <tr><td>Enumeration methodology</td><td>Partial</td><td><span class="priority-badge critical">Critical</span></td></tr>
+        <tr><td>Tunneling &amp; pivoting</td><td>Zero</td><td><span class="priority-badge high">High</span></td></tr>
+        <tr><td>Password attacks &amp; cracking</td><td>Low</td><td><span class="priority-badge high">High</span></td></tr>
+        <tr><td>Exploit finding &amp; modification</td><td>Low</td><td><span class="priority-badge high">High</span></td></tr>
+        <tr><td>Bash/Python scripting</td><td>Partial</td><td><span class="priority-badge medium">Medium</span></td></tr>
+        <tr><td>Report writing</td><td>Zero</td><td><span class="priority-badge medium">Medium</span></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Phases -->
+  <h2>The 5-Phase Plan</h2>
+
+  <!-- Phase 0 -->
+  <div class="phase open" id="phase0">
+    <div class="phase-header" onclick="togglePhase('phase0')">
+      <span class="phase-number">P0</span>
+      <span class="phase-title">Foundations</span>
+      <span class="phase-weeks">Weeks 1-3</span>
+      <span class="phase-chevron">&#9654;</span>
+    </div>
+    <div class="phase-body">
+      <div class="phase-goal">Solid Linux, networking, and scripting base. You can't hack what you can't navigate.</div>
+
+      <div class="skill-group-title">What to learn</div>
+      <ul class="skill-list">
+        <li>Linux CLI fluency &mdash; filesystem, permissions, processes, cron, services</li>
+        <li>Networking deep dive &mdash; TCP/IP, DNS, SMB, SNMP, HTTP, FTP</li>
+        <li>Bash scripting &mdash; loops, conditionals, parsing tool output</li>
+        <li>Python basics &mdash; requests, sockets, modifying exploit scripts</li>
+        <li>Kali Linux setup &mdash; VM configuration, tool familiarity</li>
+      </ul>
+
+      <div class="skill-group-title">Practice rooms</div>
+      <div class="rooms-wrap">
+        <span class="room-tag thm">THM: Pre Security Path</span>
+        <span class="room-tag thm">THM: Linux Fundamentals 1-3</span>
+        <span class="room-tag thm">THM: Bash Scripting</span>
+        <span class="room-tag thm">THM: Intro to Networking</span>
+        <span class="room-tag thm">THM: Network Services 1 &amp; 2</span>
+      </div>
+
+      <div class="milestone">
+        <strong>Milestone</strong><br>
+        SSH into a box, navigate the filesystem, write a Bash loop, explain a 3-way TCP handshake.
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 1 -->
+  <div class="phase" id="phase1">
+    <div class="phase-header" onclick="togglePhase('phase1')">
+      <span class="phase-number">P1</span>
+      <span class="phase-title">Core Pentesting &amp; Enumeration</span>
+      <span class="phase-weeks">Weeks 4-8</span>
+      <span class="phase-chevron">&#9654;</span>
+    </div>
+    <div class="phase-body">
+      <div class="phase-goal">Learn the attack lifecycle. Build your repeatable methodology. Enumeration = 40% of exam time.</div>
+
+      <div class="skill-group-title">Enumeration</div>
+      <ul class="skill-list">
+        <li>Port scanning &mdash; Nmap SYN scans, version detection, NSE scripts</li>
+        <li>Web enumeration &mdash; Gobuster/Feroxbuster, Nikto</li>
+        <li>SMB &mdash; enum4linux, smbclient, NetExec</li>
+        <li>SNMP &mdash; snmpwalk, onesixtyone</li>
+      </ul>
+
+      <div class="skill-group-title">Web attacks (build on your strength)</div>
+      <ul class="skill-list">
+        <li>SQL injection (manual only &mdash; sqlmap is banned on exam)</li>
+        <li>Local/Remote File Inclusion (LFI/RFI)</li>
+        <li>Command injection, file upload vulns, directory traversal</li>
+      </ul>
+
+      <div class="skill-group-title">Shells &amp; exploits</div>
+      <ul class="skill-list">
+        <li>Reverse/bind/web shells + stabilization</li>
+        <li>SearchSploit/ExploitDB &mdash; find and adapt public exploits</li>
+        <li>Msfvenom payload generation</li>
+      </ul>
+
+      <div class="skill-group-title">Practice</div>
+      <div class="rooms-wrap">
+        <span class="room-tag thm">THM: Jr Penetration Tester (89 rooms)</span>
+        <span class="room-tag thm">THM: Nmap</span>
+        <span class="room-tag thm">THM: OWASP Top 10</span>
+        <span class="room-tag thm">THM: SQL Injection</span>
+        <span class="room-tag thm">THM: What the Shell</span>
+      </div>
+      <p style="font-size:12px;color:var(--fg-muted);margin:0.5rem 0">Also: <a href="https://portswigger.net/web-security" style="color:var(--accent)">PortSwigger Web Security Academy</a> (free) for SQLi and file inclusion labs</p>
+
+      <div class="code-block">YOUR METHODOLOGY (start building this now)
+1. Nmap full port scan (-p-)
+2. Service version scan on open ports (-sV -sC)
+3. Per service: HTTP → gobuster; SMB → enum4linux; etc.
+4. searchsploit &lt;service version&gt;
+5. Check default creds, sensitive files, info disclosure
+6. Identify attack vector → exploit → shell</div>
+
+      <div class="milestone">
+        <strong>Milestone</strong><br>
+        Enumerate a target, find a web vuln, get a shell, and explain each step without notes.
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 2 -->
+  <div class="phase" id="phase2">
+    <div class="phase-header" onclick="togglePhase('phase2')">
+      <span class="phase-number">P2</span>
+      <span class="phase-title">Privilege Escalation</span>
+      <span class="phase-weeks">Weeks 9-13</span>
+      <span class="phase-chevron">&#9654;</span>
+    </div>
+    <div class="phase-body">
+      <div class="phase-goal">You got a shell. Now become root/SYSTEM. This is where most beginners stall.</div>
+
+      <div class="skill-group-title">Linux privesc</div>
+      <ul class="skill-list">
+        <li>SUID/SGID binaries (GTFOBins)</li>
+        <li>Cron job abuse + writable PATH hijacking</li>
+        <li>sudo -l misconfigurations</li>
+        <li>Capabilities, NFS no_root_squash</li>
+        <li>Kernel exploits (last resort)</li>
+        <li>Sensitive file discovery &mdash; config passwords, SSH keys, .bash_history</li>
+      </ul>
+
+      <div class="skill-group-title">Windows privesc</div>
+      <ul class="skill-list">
+        <li>Service misconfigs &mdash; unquoted paths, weak permissions</li>
+        <li>Token impersonation &mdash; SeImpersonatePrivilege → Potato attacks</li>
+        <li>Always Install Elevated, scheduled tasks</li>
+        <li>Registry autoruns, DLL hijacking</li>
+        <li>Credential harvesting &mdash; SAM, LSASS, cached creds</li>
+      </ul>
+
+      <div class="skill-group-title">Tools to master</div>
+      <div class="tools-grid">
+        <div class="tool-card"><div class="tool-name">linPEAS / winPEAS</div><div class="tool-desc">Automated privesc enumeration</div></div>
+        <div class="tool-card"><div class="tool-name">pspy</div><div class="tool-desc">Catch cron jobs on Linux</div></div>
+        <div class="tool-card"><div class="tool-name">GTFOBins / LOLBAS</div><div class="tool-desc">Binary abuse references</div></div>
+        <div class="tool-card"><div class="tool-name">PowerUp</div><div class="tool-desc">Windows privesc checks</div></div>
+      </div>
+
+      <div class="skill-group-title">Practice</div>
+      <div class="rooms-wrap">
+        <span class="room-tag thm">THM: Linux PrivEsc</span>
+        <span class="room-tag thm">THM: Windows PrivEsc</span>
+        <span class="room-tag thm">THM: Steel Mountain</span>
+        <span class="room-tag thm">THM: Alfred</span>
+        <span class="room-tag thm">THM: Kenobi</span>
+      </div>
+
+      <div class="milestone">
+        <strong>Milestone</strong><br>
+        Given a low-priv shell on Linux or Windows, find and exploit a privesc path in 30-60 minutes.
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 3 -->
+  <div class="phase" id="phase3">
+    <div class="phase-header" onclick="togglePhase('phase3')">
+      <span class="phase-number">P3</span>
+      <span class="phase-title">Active Directory</span>
+      <span class="phase-weeks">Weeks 14-18</span>
+      <span class="phase-chevron">&#9654;</span>
+    </div>
+    <div class="phase-body">
+      <div class="phase-goal">Make-or-break section. 40% of the exam. You cannot pass by skipping AD.</div>
+
+      <div class="skill-group-title">The AD attack chain</div>
+      <div class="code-block">Initial foothold (web app / phishing on domain machine)
+  ↓ Enumerate domain → BloodHound, PowerView, ldapsearch
+  ↓ Find attack paths → Kerberoastable SPNs, AS-REP users
+  ↓ Credential attacks → Kerberoasting, AS-REP roasting, spraying
+  ↓ Crack hashes offline → hashcat / john
+  ↓ Lateral movement → Pass-the-Hash, psexec, wmiexec, evil-winrm
+  ↓ Domain escalation → DCSync, Golden/Silver tickets
+  ↓ Compromise Domain Controller</div>
+
+      <div class="skill-group-title">Techniques to master</div>
+      <ul class="skill-list">
+        <li>Kerberoasting &mdash; GetUserSPNs.py (any authenticated user can do it)</li>
+        <li>AS-REP Roasting &mdash; GetNPUsers.py (no password needed to start)</li>
+        <li>Pass-the-Hash &mdash; psexec.py, wmiexec.py, evil-winrm</li>
+        <li>DCSync &mdash; secretsdump.py (pull all domain hashes)</li>
+        <li>Password spraying &mdash; NetExec against SMB/LDAP</li>
+        <li>BloodHound + SharpHound &mdash; visualize attack paths</li>
+      </ul>
+
+      <div class="skill-group-title">Key tools &mdash; Impacket suite is essential</div>
+      <div class="tools-grid">
+        <div class="tool-card"><div class="tool-name">Impacket</div><div class="tool-desc">GetUserSPNs, GetNPUsers, secretsdump, psexec, wmiexec</div></div>
+        <div class="tool-card"><div class="tool-name">BloodHound</div><div class="tool-desc">AD attack path visualizer</div></div>
+        <div class="tool-card"><div class="tool-name">NetExec (nxc)</div><div class="tool-desc">SMB, LDAP, WinRM, MSSQL</div></div>
+        <div class="tool-card"><div class="tool-name">evil-winrm</div><div class="tool-desc">WinRM shell with upload/download</div></div>
+      </div>
+
+      <div class="skill-group-title">Practice</div>
+      <div class="rooms-wrap">
+        <span class="room-tag thm">THM: Active Directory Basics</span>
+        <span class="room-tag thm">THM: Attacktive Directory</span>
+        <span class="room-tag thm">THM: Attacking Kerberos</span>
+        <span class="room-tag thm">THM: Wreath (pivoting)</span>
+        <span class="room-tag htb">HTB: Forest</span>
+        <span class="room-tag htb">HTB: Active</span>
+        <span class="room-tag htb">HTB: Sauna</span>
+        <span class="room-tag htb">HTB: Resolute</span>
+        <span class="room-tag htb">HTB: Cascade</span>
+      </div>
+
+      <div class="milestone">
+        <strong>Milestone</strong><br>
+        Compromise a 3-machine AD set (DC + 2 workstations) end-to-end in under 4 hours.
+      </div>
+    </div>
+  </div>
+
+  <!-- Phase 4 -->
+  <div class="phase" id="phase4">
+    <div class="phase-header" onclick="togglePhase('phase4')">
+      <span class="phase-number">P4</span>
+      <span class="phase-title">Tunneling, Grinding &amp; Mock Exams</span>
+      <span class="phase-weeks">Weeks 19-24</span>
+      <span class="phase-chevron">&#9654;</span>
+    </div>
+    <div class="phase-body">
+      <div class="phase-goal">Tie everything together. Practice under exam conditions. Target 40-70 machines total.</div>
+
+      <div class="skill-group-title">Tunneling &amp; pivoting</div>
+      <ul class="skill-list">
+        <li>SSH local/remote/dynamic port forwarding</li>
+        <li>Chisel &mdash; HTTP tunneling (one passer failed because they didn't know this tool)</li>
+        <li>Ligolo-ng, sshuttle, socat, Proxychains</li>
+      </ul>
+
+      <div class="skill-group-title">Password attacks</div>
+      <ul class="skill-list">
+        <li>Hashcat + John &mdash; know the hash types (NTLM, Kerberos, bcrypt, MD5, SHA)</li>
+        <li>Hydra for online brute force</li>
+        <li>Wordlists &mdash; rockyou, SecLists, custom rules</li>
+      </ul>
+
+      <div class="skill-group-title">Machine grind priority</div>
+      <div style="overflow-x:auto">
+        <table class="gap-table">
+          <thead><tr><th>Platform</th><th>What</th><th>Why</th></tr></thead>
+          <tbody>
+            <tr><td><span class="room-tag pg" style="margin:0">PG Practice</span></td><td>LainKusanagi list</td><td>Made by OffSec. Closest to exam.</td></tr>
+            <tr><td><span class="room-tag pg" style="margin:0">PG Play</span></td><td>Warm-up boxes</td><td>Free tier, easier</td></tr>
+            <tr><td><span class="room-tag htb" style="margin:0">HackTheBox</span></td><td>TJ Null list (retired)</td><td>Needs VIP. Sometimes harder than exam.</td></tr>
+            <tr><td><span class="room-tag thm" style="margin:0">TryHackMe</span></td><td>Offensive Pentesting</td><td>Guided, builds confidence</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="skill-group-title">Mock exams (do at least 2)</div>
+      <ul class="skill-list">
+        <li>Pick 3 standalone-difficulty machines + 1 AD set from Proving Grounds</li>
+        <li>Set a 24-hour timer. No hints, no write-ups.</li>
+        <li>Write a full report after each mock</li>
+        <li>Use the official OffSec report template</li>
+      </ul>
+
+      <div class="milestone">
+        <strong>Milestone</strong><br>
+        Complete a mock exam scoring 70+ points with a polished report.
+      </div>
+    </div>
+  </div>
+
+  <!-- Lessons from failures -->
+  <h2>Lessons From People Who Failed (Then Passed)</h2>
+
+  <div class="lesson">
+    <div class="lesson-title">Rabbit holes kill exams</div>
+    <blockquote>"I wasted 7.5 hours trying to pivot laterally when I should have moved on after 1 hour."</blockquote>
+    <p>Rule: stuck for 60-90 minutes with no progress? Move to another machine. Come back later.</p>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-title">Unbalanced practice</div>
+    <blockquote>"~80% of the boxes I'd solved were Linux. I was completely weak on Windows and AD."</blockquote>
+    <p>Force yourself onto Windows boxes. The exam has both OS types plus the AD set.</p>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-title">Weak enumeration</div>
+    <blockquote>"I missed obvious low-hanging fruit because I rushed through enumeration."</blockquote>
+    <p>Enumeration IS the exam. Build a checklist and follow it religiously on every machine.</p>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-title">The report is half the exam</div>
+    <blockquote>"I hacked the machines but lost points because my documentation was incomplete."</blockquote>
+    <p>Screenshot everything. Document commands. Write the report as you hack, not after.</p>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-title">No mock exam</div>
+    <blockquote>"Mock exams helped with mental conditioning and stress more than anything."</blockquote>
+    <p>If your first 24-hour session is the real exam, fatigue and time pressure will hit harder.</p>
+  </div>
+
+  <div class="lesson">
+    <div class="lesson-title">Burnout</div>
+    <blockquote>"I didn't realize how mentally burnt out I was."</blockquote>
+    <p>Marathon, not sprint. 2-3 hours weekdays, 4-6 weekends. Take rest days.</p>
+  </div>
+
+  <!-- Exam Day Strategy -->
+  <h2>Exam Day Strategy</h2>
+
+  <div class="timeline">
+    <div class="timeline-item">
+      <span class="timeline-time">H 0-2</span>
+      <span class="timeline-desc">Read all machines. Start with the easiest-looking standalone. Build momentum.</span>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-time">H 2-6</span>
+      <span class="timeline-desc">Move to the AD set while fresh. Target full compromise. This is your highest-value block.</span>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-time">H 6-10</span>
+      <span class="timeline-desc">Tackle remaining standalones. Time-box 2-3 hours each max.</span>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-time">H 10-12</span>
+      <span class="timeline-desc">Real break. Sleep if needed. Eat a proper meal. Step away from the screen.</span>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-time">H 12-18</span>
+      <span class="timeline-desc">Return to anything unfinished with fresh eyes. Run background scans while working.</span>
+    </div>
+    <div class="timeline-item">
+      <span class="timeline-time">H 18-24</span>
+      <span class="timeline-desc">Polish documentation. Screenshot review. Verify all flags are captured.</span>
+    </div>
+  </div>
+
+  <p style="font-size:13px;color:var(--fg-muted);margin-top:1rem"><strong style="color:var(--accent)">Buy PEN-200 around Week 14-16.</strong> You'll get the most from the 90-day lab access with foundations already in place.</p>
+
+  <!-- Tools Reference -->
+  <h2>Essential Tools Reference</h2>
+
+  <div class="skill-group-title">Enumeration</div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-name">Nmap</div><div class="tool-desc">Port scanning, service detection, NSE scripts</div></div>
+    <div class="tool-card"><div class="tool-name">Gobuster / Feroxbuster</div><div class="tool-desc">Directory &amp; file brute-forcing</div></div>
+    <div class="tool-card"><div class="tool-name">enum4linux-ng</div><div class="tool-desc">SMB/NetBIOS enumeration</div></div>
+    <div class="tool-card"><div class="tool-name">NetExec</div><div class="tool-desc">SMB, LDAP, WinRM, MSSQL</div></div>
+    <div class="tool-card"><div class="tool-name">BloodHound</div><div class="tool-desc">AD attack path mapping</div></div>
+    <div class="tool-card"><div class="tool-name">Nikto</div><div class="tool-desc">Web server scanner</div></div>
+  </div>
+
+  <div class="skill-group-title">Exploitation</div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-name">Impacket</div><div class="tool-desc">AD attacks + remote execution</div></div>
+    <div class="tool-card"><div class="tool-name">Metasploit</div><div class="tool-desc">Framework (1 machine limit on exam)</div></div>
+    <div class="tool-card"><div class="tool-name">evil-winrm</div><div class="tool-desc">WinRM shell access</div></div>
+    <div class="tool-card"><div class="tool-name">Burp Suite</div><div class="tool-desc">Web app testing (Community edition)</div></div>
+  </div>
+
+  <div class="skill-group-title">Tunneling</div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-name">Chisel</div><div class="tool-desc">HTTP tunneling &mdash; LEARN THIS</div></div>
+    <div class="tool-card"><div class="tool-name">Ligolo-ng</div><div class="tool-desc">Modern tunneling through pivots</div></div>
+    <div class="tool-card"><div class="tool-name">Proxychains</div><div class="tool-desc">Route tools through SOCKS proxy</div></div>
+    <div class="tool-card"><div class="tool-name">SSH</div><div class="tool-desc">Local/remote/dynamic forwarding</div></div>
+  </div>
+
+  <div class="skill-group-title">Post-exploitation</div>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-name">linPEAS / winPEAS</div><div class="tool-desc">Automated privesc enumeration</div></div>
+    <div class="tool-card"><div class="tool-name">Hashcat / John</div><div class="tool-desc">Hash cracking (NTLM, Kerberos, etc.)</div></div>
+    <div class="tool-card"><div class="tool-name">Hydra</div><div class="tool-desc">Online brute force</div></div>
+    <div class="tool-card"><div class="tool-name">pspy</div><div class="tool-desc">Linux process monitoring</div></div>
+  </div>
+
+  <!-- Free Resources -->
+  <h2>Free Resources</h2>
+  <div class="tools-grid">
+    <div class="tool-card"><div class="tool-name">HackTricks</div><div class="tool-desc">Encyclopedia of pentesting techniques</div></div>
+    <div class="tool-card"><div class="tool-name">GTFOBins</div><div class="tool-desc">Linux binary privesc reference</div></div>
+    <div class="tool-card"><div class="tool-name">LOLBAS</div><div class="tool-desc">Windows living-off-the-land binaries</div></div>
+    <div class="tool-card"><div class="tool-name">PayloadsAllTheThings</div><div class="tool-desc">Payloads &amp; bypass reference</div></div>
+    <div class="tool-card"><div class="tool-name">IppSec (YouTube)</div><div class="tool-desc">HTB walkthroughs &mdash; gold mine for learning</div></div>
+    <div class="tool-card"><div class="tool-name">PortSwigger Academy</div><div class="tool-desc">Free web app hacking labs</div></div>
+  </div>
+
+  <!-- Sources -->
+  <div class="sources">
+    <h2>Sources</h2>
+    <a href="https://www.offsec.com/courses/pen-200/">OffSec PEN-200 Official Course Page</a>
+    <a href="https://help.offsec.com/hc/en-us/articles/4547917816468">OffSec OSCP+ Exam Preparation Guide</a>
+    <a href="https://tryhackme.com/resources/blog/how-to-prepare-for-oscp-a-realistic-study-guide-for-2026">TryHackMe: Realistic OSCP Study Guide for 2026</a>
+    <a href="https://medium.com/@cybermindspace/i-failed-my-oscp-exam-3-times-before-passing-heres-what-finally-worked-442e52e562a1">I Failed My OSCP 3 Times Before Passing</a>
+    <a href="https://medium.com/@anyrud3/my-oscp-journey-and-mistakes-2-failed-oscp-attempts-and-finally-passed-in-3rd-6fc870a7209a">My OSCP Journey and Mistakes (3 attempts)</a>
+    <a href="https://dev.to/alexr_sec/5-brutal-lessons-i-learned-after-failing-my-first-oscp-attempt-4kaj">5 Brutal Lessons After Failing OSCP</a>
+    <a href="https://medium.com/@ramazan.abdirassilov/my-journey-to-offsec-certified-professional-oscp-from-zero-to-hero-abe8ff8455b0">OSCP: From Zero to Hero Journey</a>
+    <a href="https://medium.com/@hydra007/how-i-passed-the-oscp-with-90-100-in-1-month-and-25-days-straight-after-cpts-fa2122edea76">Passed OSCP with 90/100 in Under 2 Months</a>
+    <a href="https://equilibriumsecurity.substack.com/p/my-oscp-experience-tips-and-suggestions">My OSCP Experience: Tips and Suggestions</a>
+    <a href="https://robertscocca.medium.com/avoiding-common-oscp-pitfalls-d2dd929fdb03">Avoiding Common OSCP Pitfalls</a>
+    <a href="https://hackwithmike.gitbook.io/oscp/methodology/oscp-methodology">OSCP Methodology - Hack with Mike</a>
+    <a href="https://github.com/jeffaf/oscp-prep-checklist">OSCP Prep Checklist (GitHub)</a>
+    <a href="https://specterops.io/blog/2025/06/02/getting-the-most-value-out-of-the-oscp-after-the-exam/">SpecterOps: Getting Value Out of the OSCP</a>
+  </div>
+</div>
+
+<script>
+  function togglePhase(id) {
+    document.getElementById(id).classList.toggle('open');
+  }
+</script>
